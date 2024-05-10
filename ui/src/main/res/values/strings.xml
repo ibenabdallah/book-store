@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Book Store</string>
+    <string name="toolbar_name">List of books for kotlin</string>
+</resources>
