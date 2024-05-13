@@ -39,7 +39,7 @@ class DocRemoteRetrieverTest {
     }
 
     @Test
-    fun `WCs paging source load - failure - http error`() = runTest(testDispatcher) {
+    fun `Docs paging source load - failure - http error`() = runTest(testDispatcher) {
 
         val error = Response.error<DocsResponse<DocEntity>>(404, "null".toResponseBody())
 
@@ -57,7 +57,7 @@ class DocRemoteRetrieverTest {
 
 
     @Test
-    fun `WCs paging source refresh - success`() = runTest(testDispatcher) {
+    fun `Docs paging source refresh - success`() = runTest(testDispatcher) {
 
         coEvery { api.getAll(limit = PAGE_SIZE, offset = 0 * PAGE_SIZE) } returns Response.success(
             docsResponse
@@ -72,7 +72,7 @@ class DocRemoteRetrieverTest {
     }
 
     @Test
-    fun `WCs paging source append - success`() = runTest(testDispatcher) {
+    fun `Docs paging source append - success`() = runTest(testDispatcher) {
 
         coEvery { api.getAll(limit = PAGE_SIZE, offset = 0 * PAGE_SIZE) } returns Response.success(
             docsResponse
@@ -86,7 +86,7 @@ class DocRemoteRetrieverTest {
     }
 
     @Test
-    fun `WCs paging source prepend - success`() = runTest(testDispatcher) {
+    fun `Docs paging source prepend - success`() = runTest(testDispatcher) {
 
         coEvery { api.getAll(limit = PAGE_SIZE, offset = 0 * PAGE_SIZE) } returns Response.success(
             docsResponse

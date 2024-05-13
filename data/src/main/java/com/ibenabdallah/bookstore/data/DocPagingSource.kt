@@ -7,7 +7,7 @@ import com.ibenabdallah.bookstore.data.network.Status
 
 const val PAGE_SIZE = 20
 
-internal class DocsPagingSource<T: Any>(
+internal class DocPagingSource<T: Any>(
     private val fetch: suspend (offset: Int) -> Status<DocsResponse<T>>,
 ) : PagingSource<Int, T>() {
 

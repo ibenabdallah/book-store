@@ -3,6 +3,7 @@ package com.ibenabdallah.bookstore.domain
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
 import androidx.paging.testing.asSnapshot
+import com.ibenabdallah.bookstore.domain.model.BookModel
 import com.ibenabdallah.bookstore.domain.repository.DocRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -39,7 +40,7 @@ class GetAllDocUseCaseTest {
 
         coEvery { repository.invoke() } returns inputPagingData
 
-        val flow: Flow<PagingData<WcItem>> = useCase.invoke()
+        val flow: Flow<PagingData<BookModel>> = useCase.invoke()
 
         assertEquals(outputPagingData.asSnapshot(), flow.asSnapshot())
     }
@@ -49,7 +50,7 @@ class GetAllDocUseCaseTest {
 
         coEvery { repository.invoke() } returns inputEmptyPagingData
 
-        val flow: Flow<PagingData<WcItem>> = useCase.invoke()
+        val flow: Flow<PagingData<BookModel>> = useCase.invoke()
 
         assertEquals(outputEmptyPagingData.asSnapshot(), flow.asSnapshot())
     }
@@ -57,43 +58,58 @@ class GetAllDocUseCaseTest {
 
     companion object {
         // Sample data
-        private val inputWcItems = listOf(
-            WcItem(
-                type = "TOILETTES",
-                address = "JARDIN DURANTON",
-                borough = 75015,
-                hourly = "24h / 24",
-                accessPmr = "Non"
+        private val bookModels = listOf(
+            BookModel(
+                title = "Kotlin Programming",
+                titleSuggest = "Kotlin Programming",
+                titleSort = "Kotlin Programming",
+                cover = "OL34780722M",
+                authorName = listOf(
+                    "Matthew Mathias",
+                    "John Gallagher",
+                    "David Greenhalgh",
+                    "Josh Skeen"
+                ),
+                firstPublishYear  = 2018,
+                publishYear = listOf("2018"),
+                editionCount = 6,
+                editions = listOf(
+                    "OL35566818M",
+                    "OL30597828M",
+                    "OL35878975M",
+                    "OL34738668M",
+                    "OL40313230M",
+                    "OL34780722M"
+                )
             ),
-            WcItem(
-                type = "TOILETTES",
-                address = "JARDIN DURANTON",
-                borough = 75015,
-                hourly = "24h / 24",
-                accessPmr = "Non"
+            BookModel(
+                title = "Kotlin Programming",
+                titleSuggest = "Kotlin Programming",
+                titleSort = "Kotlin Programming",
+                cover = "OL34780722M",
+                authorName = listOf(
+                    "Matthew Mathias",
+                    "John Gallagher",
+                    "David Greenhalgh",
+                    "Josh Skeen"
+                ),
+                firstPublishYear  = 2018,
+                publishYear = listOf("2018"),
+                editionCount = 6,
+                editions = listOf(
+                    "OL35566818M",
+                    "OL30597828M",
+                    "OL35878975M",
+                    "OL34738668M",
+                    "OL40313230M",
+                    "OL34780722M"
+                )
             )
         )
-        val inputPagingData = flowOf(PagingData.from(inputWcItems))
-        val inputEmptyPagingData = flowOf<PagingData<WcItem>>()
-
-        private val outputWcItems = listOf(
-            WcItem(
-                type = "TOILETTES",
-                address = "JARDIN DURANTON",
-                borough = 75015,
-                hourly = "24h / 24",
-                accessPmr = "Non"
-            ),
-            WcItem(
-                type = "TOILETTES",
-                address = "JARDIN DURANTON",
-                borough = 75015,
-                hourly = "24h / 24",
-                accessPmr = "Non"
-            )
-        )
-        val outputPagingData = flowOf(PagingData.from(outputWcItems))
-        val outputEmptyPagingData = flowOf<PagingData<WcItem>>()
+        val inputPagingData = flowOf(PagingData.from(bookModels))
+        val inputEmptyPagingData = flowOf<PagingData<BookModel>>()
+        val outputPagingData = flowOf(PagingData.from(bookModels))
+        val outputEmptyPagingData = flowOf<PagingData<BookModel>>()
     }
 }
 

@@ -17,7 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class DocsPagingSourceTest {
+class DocPagingSourceTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
@@ -27,12 +27,12 @@ class DocsPagingSourceTest {
     @MockK
     private lateinit var docRetriever: DocRemoteRetriever
 
-    private lateinit var docsPagingSource: DocsPagingSource<DocEntity>
+    private lateinit var docPagingSource: DocPagingSource<DocEntity>
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        docsPagingSource = DocsPagingSource { offset ->
+        docPagingSource = DocPagingSource { offset ->
             docRetriever.invoke(offset)
         }
     }
@@ -46,7 +46,7 @@ class DocsPagingSourceTest {
         val expectedResult = PagingSource.LoadResult.Error<Int, DocEntity>(error)
 
         assertEquals(
-            expectedResult.toString(), docsPagingSource.load(
+            expectedResult.toString(), docPagingSource.load(
                 PagingSource.LoadParams.Refresh(
                     key = 0,
                     loadSize = 1,
@@ -56,6 +56,25 @@ class DocsPagingSourceTest {
         )
     }
 
+    @Test
+    fun `Docs paging source refresh - Error`() = runTest {
+
+        val dataError = Status.Error<DocsResponse<DocEntity>>(Throwable())
+        coEvery { docRetriever.invoke(0) } returns dataError
+
+        val expectedResult = PagingSource.LoadResult.Error<Int, DocEntity>(dataError.error)
+
+        assertEquals(
+            expectedResult,
+            docPagingSource.load(
+                PagingSource.LoadParams.Refresh(
+                    key = 0,
+                    loadSize = 1,
+                    placeholdersEnabled = false
+                )
+            )
+        )
+    }
 
     @Test
     fun `Docs paging source refresh - success`() = runTest {
@@ -70,7 +89,7 @@ class DocsPagingSourceTest {
 
         assertEquals(
             expectedResult,
-            docsPagingSource.load(
+            docPagingSource.load(
                 PagingSource.LoadParams.Refresh(
                     key = 0,
                     loadSize = 1,
@@ -92,7 +111,7 @@ class DocsPagingSourceTest {
         )
 
         assertEquals(
-            expectedResult, docsPagingSource.load(
+            expectedResult, docPagingSource.load(
                 PagingSource.LoadParams.Append(
                     key = 0,
                     loadSize = 1,
@@ -112,7 +131,7 @@ class DocsPagingSourceTest {
             prevKey = null,
             nextKey = 1
         )
-        val actualResult = docsPagingSource.load(
+        val actualResult = docPagingSource.load(
             PagingSource.LoadParams.Prepend(
                 key = 0,
                 loadSize = 1,

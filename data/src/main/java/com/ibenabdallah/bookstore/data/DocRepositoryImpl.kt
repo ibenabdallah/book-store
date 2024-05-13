@@ -22,7 +22,7 @@ class DocRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
             pagingSourceFactory = {
-                DocsPagingSource<DocEntity> { offset ->
+                DocPagingSource<DocEntity> { offset ->
                     docRetriever.invoke(offset)
                 }
             }
