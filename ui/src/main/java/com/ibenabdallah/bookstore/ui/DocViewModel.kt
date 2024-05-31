@@ -15,7 +15,7 @@ import javax.inject.Inject
 class DocViewModel @Inject constructor(private val useCase: GetAllDocUseCase) : ViewModel() {
 
     fun getAll(): Flow<PagingData<BookModel>> {
-        return useCase.invoke()
+        return useCase()
             .distinctUntilChanged()
             .cachedIn(viewModelScope)
     }

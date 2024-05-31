@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.hiltAndroid)
-    id("kotlin-kapt")
 }
 
 android {
@@ -36,11 +34,12 @@ android {
 
 dependencies {
 
-    // DI by hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    // DI
+    implementation(libs.javax.inject)
 
-    implementation (libs.paging.compose)
+    // Paging
+    // Note: despite 'androidx' in library name, this dependence is kotlin pure and not android-related
+    implementation (libs.paging.common)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
